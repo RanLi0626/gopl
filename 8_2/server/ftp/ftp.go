@@ -218,7 +218,7 @@ func initUsers() {
 	}
 
 	// TODO 打开相对路径的问题
-	f, err := os.Open("C:/Users/Kylin/workspace/go/src/gobook/ch8/ex8.2/server/ftp/users")
+	f, err := os.Open("C:/goproject/src/gopl/8_2/server/ftp/user")
 	if err != nil {
 		log.Fatal("failed to load users' information.", err)
 	}
