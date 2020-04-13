@@ -24,6 +24,7 @@ func handleFunc(con net.Conn) {
 		}
 		return
 	}
+	//fmt.Println(length)
 	user := make([]byte, length-uint32(binary.Size(length)))
 	err = binary.Read(con, binary.LittleEndian, user)
 	if err != nil {
@@ -33,6 +34,7 @@ func handleFunc(con net.Conn) {
 		}
 		return
 	}
+	//fmt.Println(string(user))
 
 	// 读取密码
 	err = binary.Read(con, binary.LittleEndian, &length)

@@ -25,7 +25,7 @@ var Commands = map[string]uint8{
 }
 
 var DefaultDir = map[string]string{
-	"windows": "C:/Users/Kylin/workspace/go/src/gobook/ch8",
+	"windows": "C:/goproject/src/gopl/8_2",
 	"unix":    "home/www",
 }
 
