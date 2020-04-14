@@ -3,8 +3,10 @@ package main
 
 import (
 	"encoding/binary"
+	"fmt"
 	"log"
 	"net"
+	"time"
 
 	"gopl/8_2/ftp"
 	server "gopl/8_2/server/ftp"
@@ -12,11 +14,13 @@ import (
 
 func handleFunc(con net.Conn) {
 	defer con.Close()
+	fmt.Println("server connect..." + time.Now().String())
 
 	// 身份验证
 	// 读取用户名
 	var length uint32
 	err := binary.Read(con, binary.LittleEndian, &length)
+	fmt.Println("getting username..." + time.Now().String())
 	if err != nil {
 		err = binary.Write(con, binary.LittleEndian, uint32(0))
 		if err != nil {
@@ -24,7 +28,7 @@ func handleFunc(con net.Conn) {
 		}
 		return
 	}
-	//fmt.Println(length)
+	fmt.Println(length)
 	user := make([]byte, length-uint32(binary.Size(length)))
 	err = binary.Read(con, binary.LittleEndian, user)
 	if err != nil {
@@ -34,10 +38,11 @@ func handleFunc(con net.Conn) {
 		}
 		return
 	}
-	//fmt.Println(string(user))
+	fmt.Println(string(user))
 
 	// 读取密码
 	err = binary.Read(con, binary.LittleEndian, &length)
+	fmt.Println("getting pwd..." + time.Now().String())
 	if err != nil {
 		err = binary.Write(con, binary.LittleEndian, uint32(0))
 		if err != nil {
@@ -56,6 +61,7 @@ func handleFunc(con net.Conn) {
 	}
 
 	// 验证用户名密码获取家目录
+	fmt.Println("validating..." + time.Now().String())
 	validated, cwd := server.Validate(ftp.Sbyte2str(user), ftp.Sbyte2str(pwd))
 	if !validated {
 		err = binary.Write(con, binary.LittleEndian, uint32(0))
@@ -65,6 +71,7 @@ func handleFunc(con net.Conn) {
 		return
 	}
 
+	fmt.Println("getting home..." + time.Now().String())
 	home := ftp.Str2sbyte(cwd)
 	err = binary.Write(con, binary.LittleEndian, uint32(binary.Size(home)))
 	if err != nil {
@@ -87,6 +94,7 @@ func handleFunc(con net.Conn) {
 	}
 
 	// 循环监听命令请求
+	fmt.Println("listening..." + time.Now().String())
 	for !ftpServer.Exit {
 		var length uint32
 		err = binary.Read(con, binary.LittleEndian, &length)

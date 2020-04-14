@@ -9,6 +9,7 @@ import (
 	"net"
 	"os"
 	"strings"
+	"time"
 
 	client "gopl/8_2/client/ftp"
 	"gopl/8_2/ftp"
@@ -92,6 +93,7 @@ func main() {
 		fmt.Println(err)
 		return
 	}
+	fmt.Println("connecting server" + time.Now().String())
 	defer con.Close()
 	ftpCon := ftp.FtpConn{
 		Con: con,
@@ -100,12 +102,16 @@ func main() {
 		ftpCon,
 	}
 
+	time.Sleep(5 * time.Second)
 	// 身份验证
+	fmt.Println("writing user..." + time.Now().String())
 	err = ftpClient.Write(ftp.Str2sbyte(user))
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
+	time.Sleep(5 * time.Second)
+	fmt.Println("writing pwd..." + time.Now().String())
 	err = ftpClient.Write(ftp.Str2sbyte(pwd))
 	if err != nil {
 		fmt.Println(err)
@@ -134,6 +140,7 @@ func main() {
 	fmt.Println(ftpClient.Cwd, ":")
 
 	// 监听命令行输入
+	fmt.Println("listening..." + time.Now().String())
 	for input.Scan() && !ftpClient.Exit {
 		argstr := input.Text()
 		args := strings.Split(strings.TrimSpace(argstr), " ")
