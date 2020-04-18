@@ -10,6 +10,7 @@ import (
 	"time"
 )
 
+// go run clock.go -p 1234
 func main() {
 	var port int
 	flag.IntVar(&port, "p", 8080, "port")

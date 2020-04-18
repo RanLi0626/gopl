@@ -9,6 +9,7 @@ import (
 	"time"
 )
 
+// go run clockwall.go tokyo=1234
 func main() {
 	for _, v := range os.Args[1:] {
 		params := strings.Split(v, "=")
